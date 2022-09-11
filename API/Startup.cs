@@ -11,6 +11,11 @@ using Microsoft.OpenApi.Models;
 using API.Data;
 using System.Reflection;
 using System.IO;
+using API.Interfaces;
+using API.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace API
 {
@@ -27,8 +32,7 @@ namespace API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
-            
+            services.AddScoped<ITokenService, TokenService>();
             services.AddDbContext<DataContext>(options => 
             {
                 options.UseSqlServer(_config.GetConnectionString("DefaultConnection"));
@@ -67,7 +71,17 @@ namespace API
             {
                 c.AddPolicy("AllowOrigin", options => options.AllowAnyMethod().AllowAnyHeader().WithOrigins("http://localhost:4200"));
             });
-
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options =>
+                {
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuerSigningKey = true,
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["TokenKey"])),
+                        ValidateIssuer = false,
+                        ValidateAudience = false,
+                    };
+                });
             //Json Serializer
             services.AddControllersWithViews().AddNewtonsoftJson(options =>
             options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore)
@@ -93,7 +107,17 @@ namespace API
                 logging.AddConsole();
             });
             app.UseHttpLogging();
+            app.UseRouting();
+
             app.UseCors(Options => Options.AllowAnyMethod().AllowAnyHeader().WithOrigins("http://localhost:4200"));
+
+            app.UseAuthentication();
+            app.UseAuthorization();
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+            });
 
             app.UseSwagger(c =>
             {
@@ -121,14 +145,8 @@ namespace API
             //    app.UseSpaStaticFiles();
             //}
 
-            app.UseRouting();
-            app.UseAuthorization();
-
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-                    
-            });
+            
+         
 
             //app.UseSpa(spa =>
             //{
