@@ -44,7 +44,7 @@ namespace API
                 c.SwaggerDoc("v1", new OpenApiInfo
                 {
                     Version = "v1",
-                    Title = "PickyBook API",
+                    Title = "MeetMe API",
                     Description = "Will be used as a back end with ASP.net Core Web API",
                     //TermsOfService = new Uri("https://example.com/terms"),
                     Contact = new OpenApiContact
