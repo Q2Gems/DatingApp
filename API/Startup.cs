@@ -16,6 +16,7 @@ using API.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using API.Middleware;
 
 namespace API
 {
@@ -100,19 +101,16 @@ namespace API
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            var builder = WebApplication.CreateBuilder();
-            builder.Host.ConfigureLogging(logging =>
-            { 
-                logging.ClearProviders();
-                logging.AddConsole();
-            });
-            app.UseHttpLogging();
+
+            app.UseMiddleware<ExceptionMiddleware>();
+
+            //app.UseHttpsRedirection();
+
             app.UseRouting();
 
             app.UseCors(Options => Options.AllowAnyMethod().AllowAnyHeader().WithOrigins("http://localhost:4200"));
 
             app.UseAuthentication();
-
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
@@ -131,14 +129,16 @@ namespace API
             });
 
 
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
-            else
-            {
-                app.UseExceptionHandler("/Error");
-            }
+            
+
+            //if (env.IsDevelopment())
+            //{
+            //    app.UseDeveloperExceptionPage();
+            //}
+            //else
+            //{
+            //    app.UseExceptionHandler("/Error");
+            //}
         }
     }
 }
