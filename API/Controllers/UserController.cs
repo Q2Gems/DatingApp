@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace API.Controllers
 {
+    [Authorize]
     public class UserController : BaseApiController
     {
         private readonly DataContext _context;
@@ -16,8 +17,8 @@ namespace API.Controllers
 
 
         // api/users
-        [HttpGet]
-        [AllowAnonymous]
+        [HttpGet("users")]
+        
         public async Task<ActionResult<IEnumerable<AppUser>>> GetUser()
         {
             return await _context.Users.ToListAsync();
