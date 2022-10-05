@@ -17,6 +17,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using API.Middleware;
+using API.Helpers;
 
 namespace API
 {
@@ -34,6 +35,9 @@ namespace API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddScoped<ITokenService, TokenService>();
+            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddAutoMapper(typeof(AutoMapperProfiles).Assembly);
+
             services.AddDbContext<DataContext>(options => 
             {
                 options.UseSqlServer(_config.GetConnectionString("DefaultConnection"));
