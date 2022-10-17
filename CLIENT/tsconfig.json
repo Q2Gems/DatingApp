@@ -24,4 +24,19 @@
     "fullTemplateTypeCheck": true,
     "strictInjectionParameters": true
   }
+
+  /*
+    array
+    item:
+    [0] : {username: habibi}
+    [1]:{password: pa$$word}
+
+      item.flat()
+
+    json format
+    {
+      username: habibi,
+      password: pa$$word
+    }
+  */
 }

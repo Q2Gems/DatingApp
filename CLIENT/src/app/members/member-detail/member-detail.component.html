@@ -1,1 +1,69 @@
-<p>member-detail works!</p>
+<!-- <h1 *ngIf="member">{{member.knownAs}}</h1> -->
+
+<div class="row" *ngIf="member">
+  <div class="col-4">
+    <div class="card">
+      <img src="{{member.photoUrl || './assets/user.png'}}" alt="{{member.knownAs}}" class="card-img-top img-thumbnail" style="margin: 25px;
+                                                                                                                               width: 85%;
+                                                                                                                               height: 85%;">
+      <!-- Card Body -->
+      <div class="card-body" style="padding: 0 25px">
+        <div>
+            <strong>Location:</strong>
+            <p>{{member.city}}, {{member.country}}</p>
+        </div>
+        <div>
+            <strong>Age:</strong>
+            <p>{{member.age}}</p>
+        </div>
+        <div>
+            <strong>Last Active:</strong>
+            <p>{{member.lastActive}}</p>
+        </div>
+        <div>
+            <strong>Member since:</strong>
+            <p>{{member.created}}</p>
+        </div>
+      </div>
+
+      <!-- Card Footer -->
+      <div class="card-footer" style="padding: 10px 15px;
+                                      background-color: #ffff;
+                                      border-top: none;">
+          <div class="btn-group d-flex">
+            <button class="btn btn-primary"> Like </button>
+            <button class="btn btn-success"> Message </button>
+          </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TabSet -->
+  <div class="col-8">
+    <tabset class="member-tabsets" style="border-bottom: none !important;
+                                         margin: 0;
+                                         outline: 0;">
+      <tab heading='About {{member.knownAs}}'>
+        <h4>Description</h4>
+        <p>{{member.introduction}}</p>
+        <h4>Looking for</h4>
+        <p>{{member.lookingFor}}</p>
+      </tab>
+
+      <tab heading='Interests'>
+        <h4>Interests</h4>
+        <p>{{member.interests}}</p>
+      </tab>
+
+      <tab heading='Photos'>
+        <ngx-gallery [options]="galleryOptions" [images]="galleryImages" class="ngx-gallery" style="display: inline-block; margin-bottom: 20px;" ></ngx-gallery>
+      </tab>
+
+      <tab heading='Messages'>
+        <p>Messages will go here</p>
+      </tab>
+    </tabset>
+  </div>
+
+
+</div>
