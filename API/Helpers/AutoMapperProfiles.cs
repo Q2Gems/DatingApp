@@ -20,6 +20,7 @@ namespace API.Helpers
 		     WHERE dbo.Photos.IsMain = 1
              */
             CreateMap<Photo, PhotoDto>();
+            CreateMap<MemberUpdateDto, AppUser>();
         }
     }
 }
